@@ -1,25 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import PokemonDetails from './pages/PokemonDetails';
+import Home from './pages/Home'
+import { getPokemonData } from './utils/getPokemonData';
 
-function App() {
+const App = () => {
+  const [pokemonList, setPokemonList] = useState([]);
+  const [pokemonDetails, setPokemonDetails] = useState([])
+    
+    useEffect(() => {
+        getPokemonData('https://pokeapi.co/api/v2/pokemon?limit=20', setPokemonList, setPokemonDetails)
+    }, []);
+console.log(pokemonList);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" exact element={<Home pokemonList={pokemonList}/>} />
+        <Route path="/pokemon/:name" element={<PokemonDetails  data={pokemonDetails} />} />
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;
+
